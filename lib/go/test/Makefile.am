@@ -27,11 +27,13 @@ gopath: $(THRIFT) $(THRIFTTEST) \
 				MultiplexedProtocolTest.thrift \
 				OnewayTest.thrift \
 				OptionalFieldsTest.thrift \
+				RequiredFieldTest.thrift \
 				ServicesTest.thrift \
 				GoTagTest.thrift \
 				TypedefFieldTest.thrift \
 				RefAnnotationFieldsTest.thrift \
 				UnionDefaultValueTest.thrift \
+				UnionBinaryTest.thrift \
 				ErrorTest.thrift \
 				NamesTest.thrift \
 				InitialismsTest.thrift \
@@ -45,11 +47,13 @@ gopath: $(THRIFT) $(THRIFTTEST) \
 	$(THRIFT) $(THRIFTARGS) MultiplexedProtocolTest.thrift
 	$(THRIFT) $(THRIFTARGS) OnewayTest.thrift
 	$(THRIFT) $(THRIFTARGS) OptionalFieldsTest.thrift
+	$(THRIFT) $(THRIFTARGS) RequiredFieldTest.thrift
 	$(THRIFT) $(THRIFTARGS) ServicesTest.thrift
 	$(THRIFT) $(THRIFTARGS) GoTagTest.thrift
 	$(THRIFT) $(THRIFTARGS) TypedefFieldTest.thrift
 	$(THRIFT) $(THRIFTARGS) RefAnnotationFieldsTest.thrift
 	$(THRIFT) $(THRIFTARGS) UnionDefaultValueTest.thrift
+	$(THRIFT) $(THRIFTARGS) UnionBinaryTest.thrift
 	$(THRIFT) $(THRIFTARGS) ErrorTest.thrift
 	$(THRIFT) $(THRIFTARGS) NamesTest.thrift
 	$(THRIFT) $(THRIFTARGS) InitialismsTest.thrift
@@ -74,7 +78,8 @@ check: gopath
 				namestest \
 				initialismstest \
 				dontexportrwtest \
-				ignoreinitialismstest
+				ignoreinitialismstest \
+				unionbinarytest
 	GOPATH=`pwd`/gopath $(GO) test thrift tests dontexportrwtest
 
 clean-local:
@@ -93,8 +98,10 @@ EXTRA_DIST = \
 	NamespacedTest.thrift \
 	OnewayTest.thrift \
 	OptionalFieldsTest.thrift \
+	RequiredFieldTest.thrift \
 	RefAnnotationFieldsTest.thrift \
 	UnionDefaultValueTest.thrift \
+	UnionBinaryTest.thrift \
 	ServicesTest.thrift \
 	TypedefFieldTest.thrift \
 	ErrorTest.thrift \

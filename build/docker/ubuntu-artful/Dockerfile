@@ -15,11 +15,11 @@
 # Using all stock Ubuntu Artful packaging except for:
 # - cpp: stock boost 1.62 in artful has a nasty bug so we use stock boost 1.63
 # - d: dmd does not come with Ubuntu
-# - dart: does not come with Ubuntu
+# - dart: does not come with Ubuntu. Pinned to last 1.x release
 # - dotnet: does not come with Ubuntu
 # - haxe: version 3.4.2 that comes with Ubuntu cores in our CI build
-# - go: xenial comes with 1.8, we want the latest (supported)
-# - nodejs: want v8, Ubuntu comes with v6
+# - go: artful comes with 1.9, we want the latest (supported)
+# - nodejs: want v8, artful comes with v6
 #
 
 FROM buildpack-deps:artful-scm
@@ -47,6 +47,7 @@ RUN apt-get update && \
 RUN curl https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
     curl https://storage.googleapis.com/download.dartlang.org/linux/debian/dart_stable.list > \
       /etc/apt/sources.list.d/dart_stable.list
+ENV DART_VERSION 1.24.3-1
 
 # dotnet (netcore)
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > /etc/apt/trusted.gpg.d/microsoft.gpg && \
@@ -103,8 +104,8 @@ RUN \
     sbcl --version && \
     rm -rf sbcl*
 
-ENV D_VERSION     2.077.1
-ENV DMD_DEB       dmd_2.077.1-0_amd64.deb
+ENV D_VERSION     2.080.0
+ENV DMD_DEB       dmd_2.080.0-0_amd64.deb
 RUN \
 `# D dependencies` \
     wget -q http://downloads.dlang.org/releases/2.x/${D_VERSION}/${DMD_DEB} && \
@@ -122,7 +123,7 @@ RUN \
 
 RUN apt-get install -y --no-install-recommends \
       `# Dart dependencies` \
-      dart/stable
+      dart=$DART_VERSION
 ENV PATH /usr/lib/dart/bin:$PATH
 
 RUN apt-get install -y --no-install-recommends \
@@ -182,6 +183,11 @@ RUN apt-get install -y --no-install-recommends \
 RUN apt-get install -y --no-install-recommends \
 `# Node.js dependencies` \
       nodejs
+
+# Test dependencies for running puppeteer
+RUN apt-get install -y --no-install-recommends \
+`# JS dependencies` \
+      libxss1
 
 RUN apt-get install -y --no-install-recommends \
 `# OCaml dependencies` \
